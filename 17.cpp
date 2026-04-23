@@ -2,52 +2,41 @@
 //
 
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
+#include <vector>
+#include <random>
+#include <locale>
 
 using namespace std;
 
-void printArray(const char arr[], int size) {
-    for (int i = 0; i < size; i++)
-        cout << arr[i] << " ";
+void printArray(const vector<char>& arr) {
+    for (char c : arr)
+        cout << c << " ";
     cout << endl;
 }
 
-void merge(char arr[], int left, int mid, int right) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
-
-    auto L = new char[n1];
-    auto R = new char[n2];
-
-    for (int i = 0; i < n1; i++)
-        L[i] = arr[left + i];
-
-    for (int j = 0; j < n2; j++)
-        R[j] = arr[mid + 1 + j];
+void merge(vector<char>& arr, int left, int mid, int right) {
+    vector<char> L(arr.begin() + left, arr.begin() + mid + 1);
+    vector<char> R(arr.begin() + mid + 1, arr.begin() + right + 1);
 
     int i = 0;
     int j = 0;
     int k = left;
 
-    while (i < n1 && j < n2) {
+    while (i < L.size() && j < R.size()) {
         if (L[i] <= R[j])
             arr[k++] = L[i++];
         else
             arr[k++] = R[j++];
     }
 
-    while (i < n1)
+    while (i < L.size())
         arr[k++] = L[i++];
 
-    while (j < n2)
+    while (j < R.size())
         arr[k++] = R[j++];
-
-    delete[] L;
-    delete[] R;
 }
 
-void mergeSort(char arr[], int left, int right) {
+void mergeSort(vector<char>& arr, int left, int right) {
     if (left < right) {
         int mid = left + (right - left) / 2;
 
@@ -60,21 +49,24 @@ void mergeSort(char arr[], int left, int right) {
 
 int main() {
     setlocale(LC_ALL, "ukr");
-    srand(time(nullptr));
 
     const int size = 10;
-    char arr[10]; 
+    vector<char> arr(size);
+
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> dist(0, 25);
 
     for (int i = 0; i < size; i++)
-        arr[i] = 'A' + rand() % 26;
+        arr[i] = 'A' + dist(gen);
 
     cout << "Початковий масив: ";
-    printArray(arr, size);
+    printArray(arr);
 
     mergeSort(arr, 0, size - 1);
 
     cout << "Відсортований масив: ";
-    printArray(arr, size);
+    printArray(arr);
 
     return 0;
 }
