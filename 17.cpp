@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void printArray(char arr[], int size) {
+void printArray(const char arr[], int size) {
     for (int i = 0; i < size; i++)
         cout << arr[i] << " ";
     cout << endl;
@@ -17,8 +17,8 @@ void merge(char arr[], int left, int mid, int right) {
     int n1 = mid - left + 1;
     int n2 = right - mid;
 
-    char* L = new char[n1];
-    char* R = new char[n2];
+    auto L = new char[n1];
+    auto R = new char[n2];
 
     for (int i = 0; i < n1; i++)
         L[i] = arr[left + i];
@@ -26,7 +26,9 @@ void merge(char arr[], int left, int mid, int right) {
     for (int j = 0; j < n2; j++)
         R[j] = arr[mid + 1 + j];
 
-    int i = 0, j = 0, k = left;
+    int i = 0;
+    int j = 0;
+    int k = left;
 
     while (i < n1 && j < n2) {
         if (L[i] <= R[j])
@@ -58,7 +60,7 @@ void mergeSort(char arr[], int left, int right) {
 
 int main() {
     setlocale(LC_ALL, "ukr");
-    srand(time(0));
+    srand(time(nullptr));
 
     const int size = 10;
     char arr[10]; 
